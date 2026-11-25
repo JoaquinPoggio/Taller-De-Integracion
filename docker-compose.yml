@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    container_name: petmarket-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: petmarket
+      POSTGRES_PASSWORD: petmarket
+      POSTGRES_DB: petmarket
+    ports:
+      - "5433:5432"
+    volumes:
+      - petmarket_pgdata:/var/lib/postgresql/data
+
+volumes:
+  petmarket_pgdata:
