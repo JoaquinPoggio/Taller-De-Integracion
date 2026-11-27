@@ -6,8 +6,8 @@ const router = express.Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 function publico(usuario) {
-  const { id, nombre, correo, rol } = usuario;
-  return { id, nombre, correo, rol };
+  const { id, nombre, correo, rol, usuario: nombreUsuario, contacto } = usuario;
+  return { id, nombre, correo, rol, nombreUsuario, contacto };
 }
 
 // Pasos 1 a 3: el usuario elige Google y autoriza el acceso
@@ -68,7 +68,8 @@ router.get("/auth/google/registro/callback", (req, res, next) => {
       // Paso 6: inicio de sesión automático
       req.login(nuevo, (errorLogin) => {
         if (errorLogin) return next(errorLogin);
-        res.redirect(`${FRONTEND_URL}/?registro=ok`);
+        // Paso 4 (CU2 HU2): faltan datos, así que se pasa al formulario para completarlos
+        res.redirect(`${FRONTEND_URL}/completar-perfil`);
       });
     } catch (e) {
       if (e.code === "P2002") {
@@ -81,11 +82,21 @@ router.get("/auth/google/registro/callback", (req, res, next) => {
 });
 
 // Sesión actual: sirve para saber si el usuario quedó autenticado
-router.get("/api/auth/me", (req, res) => {
+router.get("/api/auth/me", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.json({ usuario: null });
   }
-  res.json({ usuario: publico(req.user) });
+
+  // El perfil está completo cuando tiene nombre de usuario, teléfono y dirección principal
+  const direccion = await prisma.direccion.findFirst({
+    where: { usuarioId: req.user.id, esPrincipal: true },
+    select: { id: true },
+  });
+  const perfilCompleto = Boolean(
+    req.user.usuario && req.user.contacto && direccion,
+  );
+
+  res.json({ usuario: { ...publico(req.user), perfilCompleto } });
 });
 
 router.post("/api/auth/logout", (req, res, next) => {

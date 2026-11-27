@@ -17,6 +17,7 @@ const session = require("express-session");
 const passport = require("./passport");
 const prisma = require("./db");
 const authRoutes = require("./routes/auth");
+const perfilRoutes = require("./routes/perfil");
 
 const app = express();
 
