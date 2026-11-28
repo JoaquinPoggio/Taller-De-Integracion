@@ -1,0 +1,63 @@
+:root {
+  --color-principal: #1a6b4f;
+  --color-error: #a12626;
+  --color-ok: #1a6b4f;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: #222;
+}
+
+.contenedor {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.contenedor-angosto {
+  max-width: 480px;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.encabezado nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.aviso {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+}
+
+.aviso-ok {
+  background: #e3f4ec;
+  color: var(--color-ok);
+}
+
+.aviso-error {
+  background: #fbe9e9;
+  color: var(--color-error);
+}
+
+.boton-google {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  background: var(--color-principal);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.estado {
+  color: #666;
+  font-size: 0.9rem;
+}

@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import Inicio from "./pages/Inicio.jsx";
+import Registro from "./pages/Registro.jsx";
 
 export default function App() {
-  const [estado, setEstado] = useState("Consultando al backend...");
-
-  useEffect(() => {
-    fetch("/api/health")
-      .then((res) => res.json())
-      .then((data) =>
-        setEstado(
-          data.ok
-            ? "Backend y base de datos conectados"
-            : "Backend sin conexión a la base de datos",
-        ),
-      )
-      .catch(() => setEstado("No se pudo conectar con el backend"));
-  }, []);
-
   return (
-    <main style={{ fontFamily: "sans-serif", padding: "2rem" }}>
-      <h1>PetMarket Club</h1>
-      <p>{estado}</p>
-    </main>
+    <Routes>
+      <Route path="/" element={<Inicio />} />
+      <Route path="/registro" element={<Registro />} />
+      <Route
+        path="*"
+        element={
+          <main className="contenedor">
+            <h1>Página no encontrada</h1>
+            <Link to="/">Volver al inicio</Link>
+          </main>
+        }
+      />
+    </Routes>
   );
 }
